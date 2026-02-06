@@ -48,6 +48,14 @@ class LinearRegression:
         mse = sse/self.n
         rmse = np.sqrt(mse)
         return rmse
+    
+    def r_squared_calc (self, X, y):
+        y_mean = np.mean(y)
+        syy = np.sum((y-y_mean)**2)
+        sse = np.sum(self.residuals**2)
+        ssr = syy - sse
+        r_squared = ssr/syy
+        return r_squared
 
 
 
