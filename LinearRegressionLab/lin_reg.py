@@ -50,32 +50,4 @@ class LinearRegression:
         return rmse
 
 
-#First we extract the data from the file, using genfromtxt will help by automatically splitting and converting the data
-data = np.genfromtxt("housing.csv", delimiter="," , 
-                     names=True , dtype=None, encoding="utf-8")
-# Delete any row that has a NaN anywhere in it
-data = data[~np.isnan(data['total_bedrooms'])]
-print("Columns:", data.dtype.names)
 
-#next we want the target variable Y
-y = data["median_house_value"]
-print(f"Number of target values (n): {len(y)}")
-n_rows = len(y)
-#now that we have y we can continue working on setting all the elements needed for the operations
-#we will now assign the features 
-x_features = np.column_stack((data["housing_median_age"], data ["total_rooms"]))
-print(f"Shape of features matrix: {x_features.shape}")
-#now we need to create a column for the intercept
-ones = np.ones(n_rows)
-#now we create the matrix X
-X = np.column_stack((ones, x_features))
-model = LinearRegression()
-model.fit(X,y)
-var = model.variance_calc(X,y)
-st_dev = model.st_dev_calc(X,y)
-rmse = model.rmse_calc(X,y)
-print(f"Model trained with n:{model.n} and d:{model.d}")
-print(f"Coefficients b:", model.b)
-print(f"Sample Variance: {var}")
-print(f"Standard Deviation: {st_dev}")
-print(f"RMSE : {rmse}")
