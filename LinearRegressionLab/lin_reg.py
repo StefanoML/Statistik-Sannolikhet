@@ -56,6 +56,48 @@ class LinearRegression:
         ssr = syy - sse
         r_squared = ssr/syy
         return r_squared
+    
+    def f_test(self, X, y):
+        y_mean = np.mean(y)
+        syy = np.sum((y-y_mean)**2)
+        sse = np.sum(self.residuals**2)
+        ssr = syy - sse
+        variance = self.variance_calc(X,y)
+        #degrees of freedom
+        df1 = self.d
+        df2 = (self.n - self.d - 1)
+
+        f_stat = (ssr/self.d)/variance
+
+        p_value = stats.f.sf(f_stat, df1, df2)
+        return f_stat, p_value
+    
+    def pearson_corr (self, X):
+        features = X[:,1:]
+        n_features = features.shape[1]
+
+        corr_matrix = np.zeros((n_features, n_features))
+
+        for i in range(n_features):
+            for j in range(n_features):
+                if i == j:
+                    corr_matrix[i,j] = 1.0
+                else:
+                    col_i=features[:,i]
+                    col_j=features[:,j]
+
+                    #now we can calculate the correlation
+                    r,_ = stats.pearsonr(col_i, col_j)
+
+                    #finally we store it in matrix
+                    corr_matrix[i,j] = r
+
+        return corr_matrix
+    
+
+
+
+
 
 
 
