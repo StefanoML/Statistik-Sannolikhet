@@ -94,10 +94,60 @@ class LinearRegression:
 
         return corr_matrix
     
+    def t_tests(self, X, y):
+        std_dev = self.st_dev_calc(X,y)
+        variance = self.variance_calc(X,y)
 
+        #We build the covariance matrix that will check uncertainty for all coefficienys
+        cov_matrix = self.XTX_inv
 
+        #degrees of freedom
+        df = self.n - self.d - 1
 
+        #Now we test the coefficients
+        t_stats=[]
+        p_values=[]
 
+        for i in range(len(self.b)):
+            beta = self.b[i] #coefficient value
+            uncertainty = cov_matrix[i,i] #checks uncert. from diagonal
 
+            #Standard error
+            se = np.sqrt(np.abs(variance * uncertainty))
 
+            #t-statistic
+            t = (beta/se).item()
 
+            #p-value 
+            cdf = stats.t.cdf(t, df)
+            sf = stats.t.sf(t, df)
+            p = 2*min(cdf, sf)
+
+            t_stats.append(t)
+            p_values.append(p)
+        
+        return np.array(t_stats), np.array(p_values)
+    
+
+    def confidence_interval(self, X, y, alpha=0.05):
+        df=self.n-self.d-1
+
+        t_crit = stats.t.ppf(1-alpha/2, df)
+
+        variance = self.variance_calc(X,y)
+        uncertainty_diag = np.diag(self.XTX_inv)
+        se = np.sqrt(np.abs(variance * uncertainty_diag))
+
+        lower_bounds=[]
+        upper_bounds=[]
+
+        for i in range(len(self.b)):
+            margin = t_crit * se[i]
+
+            lower = (self.b[i] - margin).item()
+            upper = (self.b[i] + margin).item()
+
+            lower_bounds.append(lower)
+            upper_bounds.append(upper)
+
+        return lower_bounds, upper_bounds
