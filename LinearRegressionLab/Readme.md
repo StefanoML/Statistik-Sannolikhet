@@ -3,8 +3,6 @@
 | Instruktioner: Se till att dessa 3 filer ligger i samma mapp: 1: lin_reg.py  2: analysis.ipynb  3: housing.csv |
 | -------------------------------------------------------------------------------------------------------------- |
 
-
-
 Det här projektet använder ett eget Python-script och en Jupyter Notebook för att förutsäga huspriser baserat på ett tillhandahållet dataset. Huvudmålet var att se vilka faktorer, som inkomst eller läge, som faktiskt styr huspriserna och visa resultaten i en notebook-fil. Jag har byggt projektet med **NumPy** för matematiken och **SciPy** för de statistiska testerna.
 
 ### Koden:
@@ -27,20 +25,19 @@ För den kategoriska variabeln (närhet till havet) omvandlade jag kategorierna 
 
 ### Analys av resultat:
 
-Med ett R-square-värde på 0,65 vet vi att våra valda variabler förklarar ungefär 65 % av varians i det slutliga priset.
+Med ett R² på 0,65 förklarar modellen cirka 65% av variansen i huspriser, vilket lämnar 35% oförklarat av de inkluderade variablerna.
 
-F-testet gav ett p-värde nära noll, vilket betyder att modellen hittar verkliga mönster i datan och inte bara gissar.
+F-testet gav ett p-värde nära noll, vilket betyder att modellen som helhet är statistiskt signifikant åtminstone en prediktor har en verklig effekt på priset.
 
-T-testerna visar att "median income" (medianinkomst) är den viktigaste faktorn för det slutliga priset, vilket innebär att i områden med högre inkomster är även huspriserna högre. Man kan argumentera för att det är ett cirkulärt orsak-verkan-förhållande; det kan vara så att områden med hög inkomst är mer eftertraktade, eller att dyra områden främst lockar människor som har råd med de priserna.
+T-tester visar att **median_income** har den starkaste effekten (t = 116,15), vilket betyder att områden med högre inkomster har signifikant högre huspriser. Detta kan återspegla genuina ekonomiska mönster: rikare områden kan ha bättre faciliteter, skolor och infrastruktur som driver upp priserna. Det kan också återspegla ett cirkulärt förhållande där dyra områden attraherar höginkomsttagare som har råd med dessa priser.
 
-Å andra sidan visade Pearsons korrelationsmatris att variabler som totalt antal rum och totalt antal sovrum har en korrelation på över 0,90. Detta säger oss att dessa två kolumner ger nästan identisk information. Om vi skulle analysera ett begränsat antal variabler skulle vi därför kunna välja bara den mer generella, i det här fallet "total rooms".
+Pearsons korrelationsmatris avslöjade allvarlig multikolinjäritet bland bostadsvariablerna: **total_bedrooms** och **households** korrelerar med 0,98, och **total_rooms** korrelerar över 0,90 med båda. Detta betyder att dessa variabler ger nästan identisk information. I den ursprungliga modellen orsakade detta att **total_rooms** fick en kontraintuitiv negativ koefficient. När vi tog bort de redundanta variablerna (**total_bedrooms** och  **households** ) blev  **total_rooms**  koefficienten positiv som förväntat, vilket demonstrerar hur multikolinjäritet kan göra koefficienter instabila och vilseledande.
 
-Slutligen visar de kategoriska resultaten för närhet till havet en stor skillnad i pris beroende på läge. Koefficienterna för hus i inlandet är mycket lägre än de andra, vilket betyder att läget är en avgörande faktor i just detta dataset. Konfidensintervallen är smala, vilket visar att våra uppskattningar är ganska precisa. Eftersom intervallet mellan de låga och höga värdena inte är särskilt brett betyder det att modellen hittade väldigt konsekventa mönster genom alla rader av data, vilket gör resultaten mer pålitliga för detta dataset.
+De kategoriska variablerna för **ocean_proximity** visar signifikanta platseffekter. **ocean_INLAND** har en stark negativ koefficient (cirka -43 000), vilket betyder att fastigheter på inlandet är betydligt billigare än kustnära.  **ocean_ISLAND** -fastigheter visar en stor positiv effekt, dock med ett mycket brett konfidensintervall på grund av det lilla antalet öobservationer i datasetet.
 
+Konfidensintervallen för de flesta prediktorerna är relativt smala (särskilt för **median_income** och geografiska variabler), vilket indikerar precisa skattningar. Denna precision kommer från den stora urvalsstorleken (n = 20 433), vilket gör att modellen kan upptäcka även små effekter tillförlitligt. Dock garanterar inte smala intervall meningsfull tolkning när multikolinjäritet är närvarande vilket ses med bostadsvariablerna i den ursprungliga modellen.
 
 ---
-
-
 
 # Linear Regression Lab (English):
 
@@ -69,12 +66,15 @@ For the categoric feature ( ocean proximity ), I transformed the categories into
 
 ### Results Analysis:
 
-With an R-squared of 0.65 we know our chosen features explain about 65% of the variance on the price.
 
-The F-Test gave a p-value near zero which means the model is finding real patterns in the data, not just guessing.
+With an R-squared of 0.65, the model explains about 65% of the variance in house prices, leaving 35% unexplained by the included features.
 
-T-Tests show that "median income" is the most significant contributor on the final price, meaning that in areas with higher incomes the house prices are also higher. Might also argue it's a circular cause-effect situation, might be that areas with higher income are more in demand or might be that due to gentrification or simply expensive areas attract mostly people who can afford that kind of price.
+The F-test gave a p-value near zero, which means the model as a whole is statistically significant at least one predictor has a real effect on price.
 
-On the other hand, the Pearson correlation matrix showed that features like total rooms and total bedrooms have a correlation score above 0.90. This tells us these two columns are almost identical in the information they provide, so if we were to analyze a limited number of features we might want to only choose the more generic one, in this case "total rooms"
+T-tests show that **median_income** has the strongest effect (t = 116.15), meaning areas with higher incomes have significantly higher house prices. This could reflect genuine economic patterns: wealthier areas may have better amenities, schools, and infrastructure, which drive up prices. It could also reflect a circular relationship where expensive areas attract high income residents who can afford those prices.
 
-Finally, the categorical results for ocean proximity show a big difference in price based on location. The coefficients for being inland are much lower than the others, which means that location is a major driver in this specific dataset. The confidence intervals are narrow, which shows that our estimates are pretty precise. Since the range between the low and high values isn't very wide, it means the model found very consistent patterns across all the rows of data, making these results more reliable for this dataset.
+The Pearson correlation matrix revealed severe multicollinearity among housing variables: **total_bedrooms** and **households** correlate at 0.98, and **total_rooms** correlates above 0.90 with both. This means these variables provide nearly identical information. In the original model, this caused **total_rooms** to have a counterintuitive negative coefficient. When we removed the redundant variables (**total_bedrooms** and  **households** ), the **total_rooms** coefficient became positive as expected, demonstrating how multicollinearity can make coefficients unstable and misleading.
+
+The categorical variables for **ocean_proximity** show significant location effects. **ocean_INLAND** has a strong negative coefficient (around -43,000), meaning inland properties are substantially cheaper than coastal ones. **ocean_ISLAND** properties show a large positive effect, though with a very wide confidence interval due to the small number of island observations in the dataset.
+
+The confidence intervals for most predictors are relatively narrow (especially for **median_income** and geographic variables), indicating precise estimates. This precision comes from the large sample size (n = 20,433), which allows the model to detect even small effects reliably. However, narrow intervals don't guarantee meaningful interpretation when multicollinearity is present as seen with the housing variables in the original model.
