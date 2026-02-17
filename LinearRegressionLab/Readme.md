@@ -7,7 +7,7 @@ Det här projektet använder ett eget Python-script och en Jupyter Notebook för
 
 ### Koden:
 
-Koden använder NumPy för att utföra den matrisalgebra som krävs för den linjära regressionsmodellen. Jag använde "normalekvationen" för att beräkna koefficienterna för varje variabel. Jag använde också SciPy för att hantera statistiska distributioner. Specifikt användes SciPy för att beräkna p-värden och kritiska värden för T-tester och F-test. Dessa används av modellen för att avgöra vilka variabler som är statistiskt signifikanta och för att beräkna 95-procentiga konfidensintervall (konfidensnivån kan ändras till andra värden i notebook-filen). Biblioteket innehåller inga print-kommandon eller kommentarer för att säkerställa att koden helt fokuserar på beräkningar.
+Koden använder NumPy för att utföra den matrisalgebra som krävs för den linjära regressionsmodellen. Jag använde "normalekvationen" för att beräkna koefficienterna för varje variabel. Jag använde också SciPy för att hantera statistiska distributioner. Specifikt användes SciPy för att beräkna p-värden och kritiska värden för T-tester och F-test. Dessa används av modellen för att avgöra vilka variabler som är statistiskt signifikanta och för att beräkna 60-procentiga konfidensintervall (konfidensnivån kan ändras till andra värden i notebook-filen). Biblioteket innehåller inga print-kommandon eller kommentarer för att säkerställa att koden helt fokuserar på beräkningar.
 
 ### Notebook-filen:
 
@@ -25,7 +25,7 @@ För den kategoriska variabeln (närhet till havet) omvandlade jag kategorierna 
 
 ### Analys av resultat:
 
-Med ett R² på 0,65 förklarar modellen cirka 65% av variansen i huspriser, vilket lämnar 35% oförklarat av de inkluderade variablerna.
+Med ett R² på 0,6465 förklarar modellen cirka 65% av variansen i huspriser, vilket lämnar 35% oförklarat av de inkluderade variablerna.
 
 F-testet gav ett p-värde nära noll, vilket betyder att modellen som helhet är statistiskt signifikant åtminstone en prediktor har en verklig effekt på priset.
 
@@ -48,7 +48,7 @@ This project uses a custom Python script and a Jupyter Notebook to predict house
 
 ### The code:
 
-The code uses NumPy to perform the matrix algebra required for the linear regression model. I used the normal equation to calculate the coefficients for each feature. I also used SciPy to handle the statistical distributions. Specifically, SciPy was used to calculate the p-values and critical values for the T-tests and F-test. Those are used by  the model to determine which features are statistically significant and to calculate the 95 percent confidence intervals(the confidence can be set to different values in the notebook). The library itself contains no print statements or comments to ensure the code remains focused purely on calculations.
+The code uses NumPy to perform the matrix algebra required for the linear regression model. I used the normal equation to calculate the coefficients for each feature. I also used SciPy to handle the statistical distributions. Specifically, SciPy was used to calculate the p-values and critical values for the T-tests and F-test. Those are used by  the model to determine which features are statistically significant and to calculate the 60 percent confidence intervals(the confidence can be set to different values in the notebook). The library itself contains no print statements or comments to ensure the code remains focused purely on calculations.
 
 ### The Notebook:
 
@@ -66,8 +66,7 @@ For the categoric feature ( ocean proximity ), I transformed the categories into
 
 ### Results Analysis:
 
-
-With an R-squared of 0.65, the model explains about 65% of the variance in house prices, leaving 35% unexplained by the included features.
+With an R-squared of 0.6465, the model explains about 65% of the variance in house prices, leaving 35% unexplained by the included features.
 
 The F-test gave a p-value near zero, which means the model as a whole is statistically significant at least one predictor has a real effect on price.
 
